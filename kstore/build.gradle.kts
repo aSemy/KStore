@@ -177,16 +177,18 @@ val listKotlinTestTasks by tasks.registering {
   group = "help"
 
   doLast {
-    val taskNames = tasks
-      .withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>()
-      .joinToString(
-        prefix = "[\"",
-        postfix = "\"]",
-        separator = "\",\"",
-      ) { task ->
-        task.name
-      }
+    val kotlinTestTasks = tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>()
+    val kotlinJvmTestTasks = tasks.withType<org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest>()
 
-    println(taskNames)
+    println(
+      (kotlinTestTasks + kotlinJvmTestTasks)
+        .joinToString(
+          prefix = "[\"",
+          postfix = "\"]",
+          separator = "\",\"",
+        ) { task ->
+          task.name
+        }
+    )
   }
 }
