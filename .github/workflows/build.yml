@@ -26,7 +26,7 @@ jobs:
         run: echo "::set-output name=kotlin_test_tasks::$(./gradlew -q listKotlinTestTasks)"
 
     outputs:
-      kotlin_test_tasks: ${{ steps.set-matrix.outputs.version_matrix }}
+      kotlin_test_tasks: ${{ steps.set-matrix.outputs.kotlin_test_tasks }}
 
 
   kotlin-tests:
