@@ -43,6 +43,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
+          gradle-home-cache-includes: |
+            caches
+            notifications
+            konan
+            nodejs
+            yarn
 
       - name: Check api
         run: ./gradlew check
