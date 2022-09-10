@@ -9,7 +9,7 @@ on:
         type: string
 
 env:
-  KONAN_DATA_DIR: ${{ HOME }}/.gradle/konan
+  KONAN_DATA_DIR: /home/runner/.gradle/konan
 
 jobs:
 
