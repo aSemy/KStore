@@ -9,7 +9,7 @@ on:
         type: string
 
 env:
-  KONAN_DATA_DIR: ${{ env.GITHUB_WORKSPACE }}/.gradle/konan
+  KONAN_DATA_DIR: ${{ GITHUB_WORKSPACE }}/.gradle/konan
 
 jobs:
 
