@@ -38,6 +38,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
 
       - name: Check api
         run: ./gradlew check
