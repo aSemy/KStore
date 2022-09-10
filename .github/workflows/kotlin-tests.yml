@@ -8,6 +8,8 @@ on:
         required: true
         type: string
 
+env:
+  KONAN_DATA_DIR: ${GITHUB_WORKSPACE}/.gradle/konan
 
 jobs:
 
