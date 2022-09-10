@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         kotlin_test_task: ${{ fromJson(needs.build-matrix.outputs.kotlin_test_tasks) }}
-      fail-fast: false # in case one test fails, we still want to see results from others
+      fail-fast: false
     timeout-minutes: 30
 
     steps:
