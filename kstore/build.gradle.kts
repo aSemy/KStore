@@ -175,6 +175,7 @@ publishing {
 
 val listKotlinTestTasks by tasks.registering {
   group = "help"
+  description = "lists all Kotlin test tasks as a JSON array - to be used as a matrix parameters in the GitHub Action"
 
   doLast {
     val kotlinTestTasks = tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>()
