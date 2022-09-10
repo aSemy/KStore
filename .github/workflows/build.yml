@@ -11,8 +11,6 @@ concurrency:
   group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
   cancel-in-progress: true
 
-env:
-  KONAN_DATA_DIR: /home/runner/.gradle/konan
 
 jobs:
 
@@ -43,14 +41,14 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
-          gradle-home-cache-includes: |
-            caches
-            notifications
-            konan
-            nodejs
-            yarn
 
-      - name: Check api
+      - name: Cache Kotlin Konan
+        uses: actions/cache@v3
+        with:
+          path: ~/.konan/
+          key: ${{ runner.os }}-kotlin-konan-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
+
+      - name: Gradle check
         run: ./gradlew check
 
       - name: Write secrets to local.properties

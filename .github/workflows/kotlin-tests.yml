@@ -8,8 +8,6 @@ on:
         required: true
         type: string
 
-env:
-  KONAN_DATA_DIR: /home/runner/.gradle/konan
 
 jobs:
 
@@ -29,12 +27,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
-          gradle-home-cache-includes: |
-            caches
-            notifications
-            konan
-            nodejs
-            yarn
+
+      - name: Cache Kotlin Konan
+        uses: actions/cache@v3
+        with:
+          path: ~/.konan/
+          key: ${{ runner.os }}-kotlin-konan-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
 
       - id: set-matrix
         run: echo "::set-output name=kotlin_test_tasks::$(./gradlew -q listKotlinTestTasks)"
@@ -65,12 +63,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
-          gradle-home-cache-includes: |
-            caches
-            notifications
-            konan
-            nodejs
-            yarn
+
+      - name: Cache Kotlin Konan
+        uses: actions/cache@v3
+        with:
+          path: ~/.konan/
+          key: ${{ runner.os }}-kotlin-konan-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
 
       - name: Kotlin test ${{ matrix.kotlin_test_task }}
         run: ./gradlew ${{ matrix.kotlin_test_task }}
@@ -94,12 +92,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: false
-          gradle-home-cache-includes: |
-            caches
-            notifications
-            konan
-            nodejs
-            yarn
+
+      - name: Cache Kotlin Konan
+        uses: actions/cache@v3
+        with:
+          path: ~/.konan/
+          key: ${{ runner.os }}-kotlin-konan-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
 
       - name: Gradle check
         run: ./gradlew check
