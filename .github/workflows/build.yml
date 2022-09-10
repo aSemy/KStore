@@ -23,7 +23,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - id: set-matrix
-        run: ./gradlew -q listKotlinTestTasks
+        run: echo "::set-output name=kotlin_test_tasks::$(./gradlew -q listKotlinTestTasks)"
 
     outputs:
       kotlin_test_tasks: ${{ steps.set-matrix.outputs.version_matrix }}
