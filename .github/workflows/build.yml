@@ -21,6 +21,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
 
       - id: set-matrix
         run: echo "::set-output name=kotlin_test_tasks::$(./gradlew -q listKotlinTestTasks)"
@@ -49,6 +51,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
 
       - name: Kotlin test ${{ matrix.kotlin_test_task }}
         run: ./gradlew ${{ matrix.kotlin_test_task }}
@@ -70,6 +74,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
 
       - name: Gradle check
         run: ./gradlew check
@@ -90,6 +96,9 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+
 
       - name: Check api
         run: ./gradlew check
