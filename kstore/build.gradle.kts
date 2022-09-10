@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization")
@@ -29,6 +31,7 @@ android {
 
   lint {
     // TODO: Figure out why the linter is failing on CI
+    checkReleaseBuilds = false
     abortOnError = false
   }
 }
@@ -149,6 +152,23 @@ kotlin {
     }
 
     val windowsTest by getting
+  }
+}
+
+publishing {
+  repositories {
+    maven {
+      val isSnapshot = version.toString().endsWith("SNAPSHOT")
+      url = uri(
+        if (!isSnapshot) "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2"
+        else "https://s01.oss.sonatype.org/content/repositories/snapshots"
+      )
+
+      credentials {
+        username = gradleLocalProperties(rootDir).getProperty("sonatypeUsername")
+        password = gradleLocalProperties(rootDir).getProperty("sonatypePassword")
+      }
+    }
   }
 }
 
