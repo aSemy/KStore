@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  KONAN_DATA_DIR: ${{ env.home }}/.gradle/konan
+  KONAN_DATA_DIR: ${{ HOME }}/.gradle/konan
 
 jobs:
 
