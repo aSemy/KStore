@@ -1,0 +1,85 @@
+name: Kotlin Tests Workflow
+
+
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        required: true
+        type: string
+
+
+jobs:
+
+  build-matrix:
+    runs-on: ${{ inputs.runs-on }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+
+      - id: set-matrix
+        run: echo "::set-output name=kotlin_test_tasks::$(./gradlew -q listKotlinTestTasks)"
+
+    outputs:
+      kotlin_test_tasks: ${{ steps.set-matrix.outputs.kotlin_test_tasks }}
+
+
+  kotlin-tests:
+    runs-on: ${{ inputs.runs-on }}
+    needs: build-matrix
+    strategy:
+      matrix:
+        kotlin_test_task: ${{ fromJson(needs.build-matrix.outputs.kotlin_test_tasks) }}
+      fail-fast: false # in case one test fails, we still want to see results from others
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+
+      - name: Kotlin test ${{ matrix.kotlin_test_task }}
+        run: ./gradlew ${{ matrix.kotlin_test_task }}
+
+
+  check:
+    runs-on: ${{ inputs.runs-on }}
+    needs: kotlin-tests
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+
+      - name: Gradle check
+        run: ./gradlew check
