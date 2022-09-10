@@ -129,7 +129,7 @@ kotlin {
     }
     val appleTest by creating
 
-    appleTargets.forEach{ target ->
+    appleTargets.forEach { target ->
       getByName("${target.targetName}Main") { dependsOn(appleMain) }
       getByName("${target.targetName}Test") { dependsOn(appleTest) }
     }
@@ -149,5 +149,24 @@ kotlin {
     }
 
     val windowsTest by getting
+  }
+}
+
+
+val listKotlinTestTasks by tasks.registering {
+  group = "help"
+
+  doLast {
+    val taskNames = tasks
+      .withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>()
+      .joinToString(
+        prefix = "[\"",
+        postfix = "\"]",
+        separator = "\",\"",
+      ) { task ->
+        task.name
+      }
+
+    println(taskNames)
   }
 }
